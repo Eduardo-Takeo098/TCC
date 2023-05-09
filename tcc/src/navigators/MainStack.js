@@ -3,10 +3,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import Preload from '../screens/Preload';
 import Login from '../screens/Login';
-//import HomeStack from './HomeStack';
+import HomeDrawer from './HomeDrawer';
 
 export default createAppContainer(createStackNavigator({
     Preload,
     Login,
-    //HomeStack
+    HomeDrawer
 }));
