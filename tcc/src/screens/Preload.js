@@ -1,31 +1,50 @@
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 const Preload = (props) => {
-    if(!props.token) {
+  useEffect(() => {
+    const delay = 2000;
+
+    const timer = setTimeout(() => {
+      if (!props.token) {
         // LOGIN
         props.navigation.dispatch(StackActions.reset({
-            index:0,
-            actions:[
-                NavigationActions.navigate({routeName:'Login'})
-            ]
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Login' })]
         }));
-    } else {
+      } else {
         // HOME
         props.navigation.dispatch(StackActions.reset({
-            index:0,
-            actions:[
-                NavigationActions.navigate({routeName:'Login'})
-            ]
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'HomeDrawer' })]
         }));
-    }
+      }
+    }, delay);
 
-    return null;
+    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
+  );
 }
 
 const mapStateToProps = (state) => {
-    return {
-        token:state.userReducer.token
-    };
+  return {
+    token: state.userReducer.token
+  };
 }
-export default  connect(mapStateToProps)(Preload);
+
+export default connect(mapStateToProps)(Preload);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
