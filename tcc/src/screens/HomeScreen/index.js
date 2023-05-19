@@ -64,6 +64,18 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.detailsButtonText}>Ver detalhes</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleNavigateDetails}
+            style={[styles.detailsButton, { marginBottom: 48 }]}
+          >
+            <View style={styles.detailsButtonContent}>
+              <Image
+                source={require('./images/detalhes_2.png')}
+                style={styles.detailsButtonImage}
+              />
+              <Text style={styles.detailsButtonText}>Se torne um motorista!</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Buscar Carona</Text>
           </TouchableOpacity>
