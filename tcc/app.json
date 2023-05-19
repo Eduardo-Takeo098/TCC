@@ -4,27 +4,22 @@
     "slug": "tcc",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyAQAm4o_ullu6tzW8ZuUNNP2u1UYatwumc"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAQAm4o_ullu6tzW8ZuUNNP2u1UYatwumc"
+        }
+      }
     }
   }
 }

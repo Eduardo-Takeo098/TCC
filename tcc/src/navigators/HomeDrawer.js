@@ -2,17 +2,18 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import Home from '../screens/Home';
+import Map from '../screens/Map';
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo a Página Inicial</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Notificações')}>
-        <Text style={styles.buttonText}>Ver notificações</Text>
-      </TouchableOpacity>
-    </View>
+    <Home/>
+  );
+};
+
+const MapScreen = ({ navigation }) => {
+  return (
+    <Map/>
   );
 };
 
@@ -43,6 +44,23 @@ const App = () => {
         <Drawer.Screen
           name="Página Inicial"
           component={HomeScreen}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <View style={styles.iconContainer}>
+                <Text
+                  style={[
+                    styles.icon,
+                    { color: focused ? '#e91e63' : '#ccc' },
+                  ]}>
+                  ☺
+                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Tela de Mapa"
+          component={MapScreen}
           options={{
             drawerIcon: ({ focused }) => (
               <View style={styles.iconContainer}>
