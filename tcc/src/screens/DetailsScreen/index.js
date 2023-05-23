@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styled';
+import { getRideDetails } from './detailsApi';
 
-const RideDetailsScreen = ({ route }) => {
+const RideDetailsScreen = () => {
   const navigation = useNavigation();
-  const ride = route.params?.ride;
+  const [ride, setRide] = useState(null);
 
   const goBackToHome = () => {
     navigation.navigate('HomeScreen');
   };
+
+  useEffect(() => {
+    const fetchRideDetails = async () => {
+      try {
+        const rideDetails = await getRideDetails();
+        setRide(rideDetails);
+      } catch (error) {
+        console.error('Erro ao buscar os detalhes da viagem:', error);
+      }
+    };
+
+    fetchRideDetails();
+  }, []);
 
   if (!ride) {
     return (
