@@ -12,7 +12,7 @@ const getRideDetails = () => {
       // Simulando um pequeno atraso na resposta da API
       setTimeout(() => {
         resolve(ride);
-      }, 3000);
+      }, 2000);
     });
   };
   
