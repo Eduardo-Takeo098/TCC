@@ -7,6 +7,6 @@ import HomeDrawer from './HomeDrawer';
 
 export default createAppContainer(createStackNavigator({
     Preload,
-    Login,
+
     HomeDrawer,
 }));

@@ -1,11 +1,12 @@
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import {StyleSheet, View, Dimensions, Text, TouchableOpacity} from "react-native";
 import {GooglePlacesAutocomplete,} from "react-native-google-places-autocomplete";
-import { GOOGLE_API_KEY } from "./environments";
 import Constants from "expo-constants";
 import { useRef, useState } from "react";
 import MapViewDirections from "react-native-maps-directions";
 import React from "react";
+
+const GOOGLE_API_KEY = 'AIzaSyDnp6LRTU4hYJM0XjY57ywva2hfmiLweH4'; 
 
 const { width, height } = Dimensions.get("window");
 
@@ -29,7 +30,7 @@ function InputAutocomplete({
       <Text>{label}</Text>
       <GooglePlacesAutocomplete
         styles={{ textInput: styles.input }}
-        placeholder={placeholder || ""}
+        placeholder={placeholder = ""}
         fetchDetails
         onPress={(data, details = null) => {
           onPlaceSelected(details);

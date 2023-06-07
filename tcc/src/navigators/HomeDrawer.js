@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import DetailsScreen from '../screens/DetailsScreen';
+import UserScreen from '../screens/UserScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -21,6 +22,23 @@ const App = () => {
         <Drawer.Screen
           name="Página Inicial"
           component={HomeScreen}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <View style={styles.iconContainer}>
+                <Text
+                  style={[
+                    styles.icon,
+                    { color: focused ? '#e91e63' : '#ccc' },
+                  ]}>
+                  🏠
+                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Perfil"
+          component={UserScreen}
           options={{
             drawerIcon: ({ focused }) => (
               <View style={styles.iconContainer}>
