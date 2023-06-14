@@ -1,7 +1,3 @@
-import firebase from 'firebase';
-
-import 'firebase/firestore';
-
 const firebaseConfig = {
     apiKey: "AIzaSyCpxOiQoz9sFYddHGAw9nIJBYTlspj8BP8",
     authDomain: "tccprojeto-adcd4.firebaseapp.com",
@@ -11,9 +7,5 @@ const firebaseConfig = {
     appId: "1:227998239207:web:d7b7f2800ffe6c04f91542",
     measurementId: "G-LBGN74RB4M"
   };
-
-  if(firebase.app.length == 0){
-      firebase = firebase.initialApp(firebaseConfig);
-  }
-
-  export default firebase;
+  
+  export default firebaseConfig;

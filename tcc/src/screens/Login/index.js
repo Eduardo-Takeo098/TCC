@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Statusbar, Platform, Text, ActivityIndicator } from 'react-native';
+import { Statusbar, Platform, Text, ActivityIndicator, Alert } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import dbLogin from '../Database/dbLogin';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from '../Database/dbConfig';
 import { 
   Container,
   Header,
@@ -17,7 +19,6 @@ import {
 } from './styled';
 
 const Page = (props) => {
-  const api = (dbLogin);
 
   const [activeMenu, setActiveMenu] = useState('signin');
   const [name, setName] = useState('');
@@ -25,44 +26,30 @@ const Page = (props) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSignIn = async () => {
-    if(email && password) {
-      setLoading(true);
-      const res = await api.signin(email, password);
-      setLoading(false);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-      if(res.error) {
-        alert(res.error);
-      } else {
-        props.setToken(res.token);
-        props.navigation.dispatch(StackActions.reset({
-          index:0,
-          actions:[
-              NavigationActions.navigate({routeName:'HomeDrawer'})
-          ]
-        }));
-      }
-    }
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log('Conta criada com sucesso')
+      const user = userCredential.user;
+      console.log(user);
+    }).catch(error => {
+      console.log(error);
+      Alert.alert(error.message)
+    })
   }
 
-  const handleSignUp = async () => {
-    if(name && email && password) {
-      setLoading(true);
-      const res = await api.signup(name, email, password);
-      setLoading(false);
-
-      if(res.error) {
-        alert(res.error);
-      } else {
-        props.setToken(res.token);
-        props.navigation.dispatch(StackActions.reset({
-          index:0,
-          actions:[
-              NavigationActions.navigate({routeName:'HomeDrawer'})
-          ]
-        }));
-      }
-    }
+  const handleSignIn = async () => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log('Logado')
+      const user = userCredential.user;
+      console.log(user);
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   return (

@@ -121,22 +121,22 @@ export default function App() {
         <InputAutocomplete
           label="Origin"
           onPlaceSelected={(details) => {
-            onPlaceSelected(details, "origin");
+            onPlaceSelected(details, "origem");
           }}
         />
         <InputAutocomplete
           label="Destination"
           onPlaceSelected={(details) => {
-            onPlaceSelected(details, "destination");
+            onPlaceSelected(details, "destino");
           }}
         />
         <TouchableOpacity style={styles.button} onPress={traceRoute}>
-          <Text style={styles.buttonText}>Trace route</Text>
+          <Text style={styles.buttonText}>Buscar Motorista</Text>
         </TouchableOpacity>
         {distance && duration ? (
           <View>
-            <Text>Distance: {distance.toFixed(2)}</Text>
-            <Text>Duration: {Math.ceil(duration)} min</Text>
+            <Text>Distancia: {distance.toFixed(2)}</Text>
+            <Text>Duração: {Math.ceil(duration)} min</Text>
           </View>
         ) : null}
       </View>
