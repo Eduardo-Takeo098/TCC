@@ -1,38 +1,58 @@
+// styled.js
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  userContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    padding: 16,
+    backgroundColor: '#f5f5f5',
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginRight: 10,
+  form: {
+    width: '100%',
+    marginBottom: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  userInfo: {
-    justifyContent: 'center',
-  },
-  userName: {
-    fontSize: 20,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
   },
-  userAge: {
+  inputContainer: {
+    marginBottom: 16,
+  },
+  inputTitle: {
     fontSize: 16,
+    marginBottom: 8,
   },
-  history: {
-    fontSize: 18,
-    marginBottom: 10,
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    borderRadius: 4,
   },
-  rating: {
-    fontSize: 16,
+  button: {
+    marginBottom: 16,
+  },
+  snackbar: {
+    backgroundColor: '#333',
+    marginBottom: 16,
+    borderRadius: 4,
+  },
+  snackbarText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

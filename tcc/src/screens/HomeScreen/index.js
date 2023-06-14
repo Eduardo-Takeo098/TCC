@@ -6,7 +6,7 @@ import * as Location from 'expo-location';
 
 const HomeScreen = ({ navigation }) => {
   const [userLocation, setUserLocation] = useState(null);
-
+  
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();

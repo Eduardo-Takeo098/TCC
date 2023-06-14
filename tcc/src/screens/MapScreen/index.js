@@ -1,12 +1,19 @@
+import React, { useState, useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import {StyleSheet, View, Dimensions, Text, TouchableOpacity} from "react-native";
-import {GooglePlacesAutocomplete,} from "react-native-google-places-autocomplete";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Constants from "expo-constants";
-import { useRef, useState } from "react";
 import MapViewDirections from "react-native-maps-directions";
-import React from "react";
 
-const GOOGLE_API_KEY = 'AIzaSyDnp6LRTU4hYJM0XjY57ywva2hfmiLweH4'; 
+const GOOGLE_API_KEY = 'AIzaSyDnp6LRTU4hYJM0XjY57ywva2hfmiLweH4';
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,17 +27,13 @@ const INITIAL_POSITION = {
   longitudeDelta: LONGITUDE_DELTA,
 };
 
-function InputAutocomplete({
-  label,
-  placeholder,
-  onPlaceSelected,
-}) {
+function InputAutocomplete({ label, placeholder, onPlaceSelected }) {
   return (
     <>
-      <Text>{label}</Text>
+      <Text style={styles.label}>{label}</Text>
       <GooglePlacesAutocomplete
         styles={{ textInput: styles.input }}
-        placeholder={placeholder = ""}
+        placeholder={placeholder}
         fetchDetails
         onPress={(data, details = null) => {
           onPlaceSelected(details);
@@ -83,10 +86,7 @@ export default function App() {
     }
   };
 
-  const onPlaceSelected = (
-    details,
-    flag
-  ) => {
+  const onPlaceSelected = (details, flag) => {
     const set = flag === "origin" ? setOrigin : setDestination;
     const position = {
       latitude: details?.geometry.location.lat || 0,
@@ -95,9 +95,16 @@ export default function App() {
     set(position);
     moveTo(position);
   };
-  
+
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#667eea", "#764ba2"]}
+      style={styles.container}
+    >
+      <View style={styles.header}>
+        <Ionicons name="map" size={24} color="#fff" style={styles.headerIcon} />
+        <Text style={styles.headerText}>Mapa</Text>
+      </View>
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -119,66 +126,111 @@ export default function App() {
       </MapView>
       <View style={styles.searchContainer}>
         <InputAutocomplete
-          label="Origin"
+          label="Origem"
+          placeholder="Digite a origem"
           onPlaceSelected={(details) => {
-            onPlaceSelected(details, "origem");
+            onPlaceSelected(details, "origin");
           }}
         />
         <InputAutocomplete
-          label="Destination"
+          label="Destino"
+          placeholder="Digite o destino"
           onPlaceSelected={(details) => {
-            onPlaceSelected(details, "destino");
+            onPlaceSelected(details, "destination");
           }}
         />
         <TouchableOpacity style={styles.button} onPress={traceRoute}>
+          <Ionicons name="car" size={24} color="#fff" style={styles.buttonIcon} />
           <Text style={styles.buttonText}>Buscar Motorista</Text>
         </TouchableOpacity>
         {distance && duration ? (
-          <View>
-            <Text>Distancia: {distance.toFixed(2)}</Text>
-            <Text>Duração: {Math.ceil(duration)} min</Text>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>Distância: {distance.toFixed(2)}</Text>
+            <Text style={styles.infoText}>Duração: {Math.ceil(duration)} min</Text>
           </View>
         ) : null}
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  headerIcon: {
+    marginLeft: 16,
+  },
+  headerText: {
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginLeft: 8,
+  },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
   searchContainer: {
     position: "absolute",
+    top: Constants.statusBarHeight + 16,
     width: "90%",
     backgroundColor: "white",
-    shadowColor: "black",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 4,
-    padding: 8,
     borderRadius: 8,
-    top: Constants.statusBarHeight,
+    padding: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  label: {
+    color: "#333",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   input: {
-    borderColor: "#888",
     borderWidth: 1,
+    borderColor: "#888",
+    borderRadius: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginBottom: 8,
   },
   button: {
-    backgroundColor: "#bbb",
+    backgroundColor: "#6c63ff",
+    borderRadius: 4,
     paddingVertical: 12,
     marginTop: 16,
-    borderRadius: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  buttonIcon: {
+    marginRight: 8,
   },
   buttonText: {
     textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  infoContainer: {
+    marginTop: 16,
+    alignItems: "center",
+  },
+  infoText: {
+    marginBottom: 8,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
   },
 });

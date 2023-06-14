@@ -12,7 +12,7 @@ const Preload = (props) => {
         // LOGIN
         props.navigation.dispatch(StackActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'Login' })]
+          actions: [NavigationActions.navigate({ routeName: 'HomeDrawer' })]
         }));
       } else {
         // HOME
@@ -23,7 +23,7 @@ const Preload = (props) => {
       }
     }, delay);
 
-    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
+    return () => clearTimeout(timer);
   }, []);
 
   return (

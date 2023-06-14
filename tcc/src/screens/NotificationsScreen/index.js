@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { styles } from './styled';
 
-const NotificationsScreen = ({ navigation }) => {
+const NotificationsScreen = () => {
+  const navigation = useNavigation();
+
   const goBackToHome = () => {
     navigation.navigate('HomeScreen');
   };

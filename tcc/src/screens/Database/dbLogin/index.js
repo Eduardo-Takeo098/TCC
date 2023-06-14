@@ -1,3 +1,0 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../dbConfig';
