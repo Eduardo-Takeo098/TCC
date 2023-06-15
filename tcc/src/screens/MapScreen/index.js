@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
+    margin: 10,
   },
   headerIcon: {
     marginLeft: 16,

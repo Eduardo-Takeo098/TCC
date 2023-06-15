@@ -17,7 +17,7 @@ const UserScreen = () => {
 
   const handleAddData = async () => {
     try {
-      // Adicionar dados ao banco
+      
       await addDoc(collection(db, 'users'), {
         address,
         cpf,
@@ -25,13 +25,12 @@ const UserScreen = () => {
         rg,
       });
 
-      // Limpar os campos após adicionar os dados
+      
       setAddress('');
       setCPF('');
       setNumber('');
       setRG('');
 
-      // Exibir snackbar para notificar que os dados foram adicionados
       setSnackbarVisible(true);
     } catch (error) {
       console.error('Erro ao adicionar dados:', error);
@@ -41,7 +40,7 @@ const UserScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <Text style={styles.title}>Adicionar Usuário</Text>
+        <Text style={styles.title}>Atualize seu perfil!</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputTitle}>Endereço</Text>
           <TextInput
