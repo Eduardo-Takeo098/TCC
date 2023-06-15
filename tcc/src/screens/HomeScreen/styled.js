@@ -1,6 +1,68 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export const styles = StyleSheet.create({
+  
+  image1: {
+    width: '100%',
+    height: 450,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+
+  title1: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: '#3AC9CC',
+    width: '70%',
+    marginLeft: 25,
+    textAlign: 'center',
+    marginTop: 150,
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
+  },
+
+  button1: {
+    backgroundColor: '#fff',
+    width: 200,
+    height: 40,
+    borderRadius: 10,
+    marginTop: 25,
+    marginLeft: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  buttonText1: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  courseListBackground: {
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+    marginHorizontal: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  courseListImage: {
+    resizeMode: 'cover',
+    borderRadius: 20,
+  },
+  courseListTitle: {
+    color: '#345c74',
+    fontSize: 13,
+    paddingHorizontal: 20,
+    width: 170,
+  },
+  courseListSubtitle: {
+    color: '#f58084',
+    fontSize: 12,
+    paddingHorizontal: 20,
+  },
+  
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -27,15 +89,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
   },
-  inputContainer: {
-    width: '100%',
-    height: 48,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 24,
-    paddingHorizontal: 16,
-    marginBottom: 24,
-    justifyContent: 'center',
-  },
+
   input: {
     fontSize: 16,
     color: '#888',

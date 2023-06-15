@@ -51,8 +51,13 @@ export default function App() {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [showDirections, setShowDirections] = useState(false);
+  const [isDriverFound, setIsDriverFound] = useState(false);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isRideCancelled, setIsRideCancelled] = useState(false);
+  const [isRequestCreated, setIsRequestCreated] = useState(false);
+  const [isSearchingDriver, setIsSearchingDriver] = useState(false);
+  const [cancelButtonVisible, setCancelButtonVisible] = useState(true);
   const mapRef = useRef(null);
 
   const moveTo = async (position) => {
@@ -72,35 +77,67 @@ export default function App() {
     left: edgePaddingValue,
   };
 
-  const traceRouteOnReady = (args) => {
-    if (args) {
-      setDistance(args.distance);
-      setDuration(args.duration);
+  const traceRouteOnReady = (result) => {
+    if (result) {
+      const { distance, duration } = result;
+
+      setDistance(distance);
+      setDuration(duration);
     }
   };
 
   const traceRoute = () => {
     if (origin && destination) {
       setShowDirections(true);
-      mapRef.current?.fitToCoordinates([origin, destination], { edgePadding });
+      mapRef.current?.fitToCoordinates([origin, destination], {
+        edgePadding,
+      });
+      setIsRequestCreated(true);
+      setIsSearchingDriver(true);
+
+      setTimeout(() => {
+        setIsSearchingDriver(false);
+        setIsDriverFound(true);
+        setCancelButtonVisible(true);
+      }, 2000);
     }
   };
 
-  const onPlaceSelected = (details, flag) => {
-    const set = flag === "origin" ? setOrigin : setDestination;
+  const cancelRide = () => {
+    setIsRideCancelled(true);
+    setIsRequestCreated(false);
+    setOrigin(null);
+    setDestination(null);
+    setDistance(0);
+    setDuration(0);
+    setCancelButtonVisible(false);
+  };
+
+  const resetRide = () => {
+    setIsRideCancelled(false);
+    setCancelButtonVisible(true);
+  };
+
+  const onPlaceSelected = (details, type) => {
+    const { geometry } = details;
+    const { location } = geometry;
+    const { lat, lng } = location;
     const position = {
-      latitude: details?.geometry.location.lat || 0,
-      longitude: details?.geometry.location.lng || 0,
+      latitude: lat,
+      longitude: lng,
     };
-    set(position);
+
+    if (type === "origin") {
+      setOrigin(position);
+    } else if (type === "destination") {
+      setDestination(position);
+    }
+
     moveTo(position);
   };
 
   return (
-    <LinearGradient
-      colors={["#667eea", "#764ba2"]}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#667eea", "#764ba2"]} style={styles.container}>
       <View style={styles.header}>
         <Ionicons name="map" size={24} color="#fff" style={styles.headerIcon} />
         <Text style={styles.headerText}>Mapa</Text>
@@ -139,10 +176,30 @@ export default function App() {
             onPlaceSelected(details, "destination");
           }}
         />
-        <TouchableOpacity style={styles.button} onPress={traceRoute}>
-          <Ionicons name="car" size={24} color="#fff" style={styles.buttonIcon} />
-          <Text style={styles.buttonText}>Buscar Motorista</Text>
-        </TouchableOpacity>
+        {!isRequestCreated && (
+          <TouchableOpacity style={styles.button} onPress={traceRoute}>
+            <Ionicons
+              name="car"
+              size={24}
+              color="#fff"
+              style={styles.buttonIcon}
+            />
+            <Text style={styles.buttonText}>Buscar Motorista</Text>
+          </TouchableOpacity>
+        )}
+        {isSearchingDriver && (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>Buscando motorista...</Text>
+          </View>
+        )}
+        {isDriverFound && cancelButtonVisible && (
+          <View style={styles.driverFoundContainer}>
+            <Text style={styles.driverFoundText}>Motorista encontrado!</Text>
+            <TouchableOpacity style={styles.cancelButton} onPress={cancelRide}>
+              <Text style={styles.cancelButtonText}>Cancelar Corrida</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         {distance && duration ? (
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}>Distância: {distance.toFixed(2)}</Text>
@@ -154,6 +211,7 @@ export default function App() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -164,7 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
-    margin: 10,
+    marginTop: 9,
   },
   headerIcon: {
     marginLeft: 16,
@@ -183,55 +241,73 @@ const styles = StyleSheet.create({
   searchContainer: {
     position: "absolute",
     top: Constants.statusBarHeight + 16,
-    width: "90%",
-    backgroundColor: "white",
+    left: 16,
+    right: 16,
+    backgroundColor: "#fff",
     borderRadius: 8,
-    padding: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    padding: 16,
     elevation: 5,
   },
   label: {
-    color: "#333",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#888",
-    borderRadius: 4,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
     marginBottom: 8,
   },
-  button: {
-    backgroundColor: "#6c63ff",
+  input: {
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
     borderRadius: 4,
-    paddingVertical: 12,
-    marginTop: 16,
-    justifyContent: "center",
-    alignItems: "center",
+    marginBottom: 16,
+    paddingHorizontal: 8,
+  },
+  button: {
     flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#667eea",
+    padding: 8,
+    borderRadius: 4,
+    elevation: 2,
   },
   buttonIcon: {
     marginRight: 8,
   },
   buttonText: {
-    textAlign: "center",
     color: "#fff",
-    fontWeight: "bold",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+  loadingContainer: {
+    alignItems: "center",
+    marginTop: 16,
+  },
+  loadingText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  driverFoundContainer: {
+    alignItems: "center",
+    marginTop: 16,
+  },
+  driverFoundText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  cancelButton: {
+    backgroundColor: "#ff0000",
+    padding: 8,
+    borderRadius: 4,
+  },
+  cancelButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   infoContainer: {
     marginTop: 16,
-    alignItems: "center",
   },
   infoText: {
-    marginBottom: 8,
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#fff",
   },
 });

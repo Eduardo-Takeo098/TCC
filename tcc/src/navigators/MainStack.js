@@ -2,6 +2,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Preload from '../screens/Preload';
+import OnboardingScreen from '../screens/OnboardingScreen';
 import Login from '../screens/Login';
 import HomeDrawer from './HomeDrawer';
 import HomeScreen from '../screens/HomeScreen';
@@ -14,6 +15,12 @@ const MainStack = createStackNavigator(
   {
     Preload: {
       screen: Preload,
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
+    OnboardingScreen: {
+      screen: OnboardingScreen,
       navigationOptions: {
         headerShown: false,
       },

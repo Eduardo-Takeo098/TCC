@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
-import { StatusBar, Platform, Text, ActivityIndicator, Alert } from 'react-native';
+import {
+  StatusBar,
+  Platform,
+  Text,
+  ActivityIndicator,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  Keyboard,
+} from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../Database/dbConfig';
 import {
@@ -15,7 +29,8 @@ import {
   Input,
   ActionButton,
   ActionButtonText,
-  LoadingArea
+  LoadingArea,
+  LogoImage,
 } from './styled';
 
 const app = initializeApp(firebaseConfig);
@@ -36,14 +51,16 @@ const Login = (props) => {
         console.log(user);
 
         props.setToken(user.token);
-        props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'HomeDrawer' })
-          ]
-        }));
+        props.navigation.dispatch(
+          StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'HomeDrawer' }),
+            ],
+          })
+        );
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         Alert.alert(error.message);
       });
@@ -57,72 +74,116 @@ const Login = (props) => {
         console.log(user);
 
         props.setToken(user.token);
-        props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'HomeDrawer' })
-          ]
-        }));
+        props.navigation.dispatch(
+          StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'HomeDrawer' }),
+            ],
+          })
+        );
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         Alert.alert('Email ou senha incorreta');
       });
   };
 
   return (
-    <Container behavior={Platform.OS === 'ios' ? 'padding' : null}>
-      <StatusBar barStyle="light-content" />
-      <Header>
-        <HeaderTitle>Carona Solidária</HeaderTitle>
-      </Header>
-      <Menu>
-        <MenuItem active={activeMenu === 'signin'} onPress={() => setActiveMenu('signin')} underlayColor="transparent">
-          <MenuItemText>Login</MenuItemText>
-        </MenuItem>
-        <MenuItem active={activeMenu === 'signup'} onPress={() => setActiveMenu('signup')} underlayColor="transparent">
-          <MenuItemText>Cadastrar</MenuItemText>
-        </MenuItem>
-      </Menu>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      style={{ flex: 1 }}
+      onPress={() => Keyboard.dismiss()}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Container>
+          <StatusBar barStyle="light-content" />
+          <Header>
+            <HeaderTitle>Carona Solidária</HeaderTitle>
+            <LogoImage source={require('./images/image1.png')} />
+          </Header>
+          <Menu>
+            <MenuItem
+              active={activeMenu === 'signin'}
+              onPress={() => setActiveMenu('signin')}
+              underlayColor="transparent"
+            >
+              <MenuItemText>Login</MenuItemText>
+            </MenuItem>
+            <MenuItem
+              active={activeMenu === 'signup'}
+              onPress={() => setActiveMenu('signup')}
+              underlayColor="transparent"
+            >
+              <MenuItemText>Cadastrar</MenuItemText>
+            </MenuItem>
+          </Menu>
 
-      {activeMenu === 'signup' && (
-        <Input editable={!loading} value={name} onChangeText={t => setName(t)} placeholder="Nome" placeholderTextColor="#999" />
-      )}
+          {activeMenu === 'signup' && (
+            <Input
+              editable={!loading}
+              value={name}
+              onChangeText={(t) => setName(t)}
+              placeholder="Nome"
+              placeholderTextColor="#999"
+            />
+          )}
 
-      <Input editable={!loading} value={email} onChangeText={t => setEmail(t)} keyboardType="email-address" autoCapitalize="none" placeholder="E-mail" placeholderTextColor="#999" />
+          <Input
+            editable={!loading}
+            value={email}
+            onChangeText={(t) => setEmail(t)}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholder="E-mail"
+            placeholderTextColor="#999"
+          />
 
-      <Input editable={!loading} value={password} onChangeText={t => setPassword(t)} placeholder="Senha" placeholderTextColor="#999" secureTextEntry={true} />
+          <Input
+            editable={!loading}
+            value={password}
+            onChangeText={(t) => setPassword(t)}
+            placeholder="Senha"
+            placeholderTextColor="#999"
+            secureTextEntry={true}
+          />
 
-      {activeMenu === 'signin' && (
-        <ActionButton disabled={loading} onPress={handleSignIn}>
-          <ActionButtonText>Login</ActionButtonText>
-        </ActionButton>
-      )}
+          {activeMenu === 'signin' && (
+            <ActionButton disabled={loading} onPress={handleSignIn}>
+              <ActionButtonText>Login</ActionButtonText>
+            </ActionButton>
+          )}
 
-      {activeMenu === 'signup' && (
-        <ActionButton disabled={loading} onPress={handleSignUp}>
-          <ActionButtonText>Cadastrar</ActionButtonText>
-        </ActionButton>
-      )}
+          {activeMenu === 'signup' && (
+            <ActionButton disabled={loading} onPress={handleSignUp}>
+              <ActionButtonText>Cadastrar</ActionButtonText>
+            </ActionButton>
+          )}
 
-      {loading && (
-        <LoadingArea>
-          <ActivityIndicator size="large" color="#FFF" />
-        </LoadingArea>
-      )}
-    </Container>
+          {loading && (
+            <LoadingArea>
+              <ActivityIndicator size="large" color="#FFF" />
+            </LoadingArea>
+          )}
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    token: state.userReducer.token
+    token: state.userReducer.token,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setToken: (token) => dispatch({ type: 'SET_TOKEN', payload: { token } })
+    setToken: (token) =>
+      dispatch({ type: 'SET_TOKEN', payload: { token } }),
   };
 };
 
