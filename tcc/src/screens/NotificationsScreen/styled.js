@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   backButton: {
-    backgroundColor: '#eaeaea',
+    backgroundColor: 'black',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
@@ -29,5 +29,6 @@ export const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 16,
     textAlign: 'center',
+    color: '#fff',
   },
 });

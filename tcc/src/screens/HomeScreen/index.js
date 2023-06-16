@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
   },
   headerBackground: {
     width: '100%',
@@ -130,22 +130,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   courseListTitle: {
-  color: '#fff',
+  color: '#2e2c2c',
   fontSize: 16,
   paddingHorizontal: 20,
   width: 200,
   fontWeight: 'bold',
   textAlign: 'center',
   marginTop: 8,
-  textShadowColor: 'rgba(0, 0, 0, 0.4)',
-  textShadowOffset: { width: 1, height: 1 },
-  textShadowRadius: 2,
 },
   button: {
     width: '100%',
     height: 56,
-    backgroundColor: '#FF5F58',
+    backgroundColor: '#55f2ab',
     borderRadius: 28,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -237,17 +235,17 @@ const HomeScreen = ({ navigation }) => {
             </MapView>
           )}
           <CourseList
-            img={require('./images/image2.png')}
-            title="Ver detalhes"
-            bg={require('./images/back.png')}
+            img={require('./images/icon2.png')}
+            title="Ver detalhes da corrida"
+            bg={require('./images/back2.png')}
           />
           <CourseList
-            img={require('./images/image3.png')}
+            img={require('./images/icon2.png')}
             title="Se torne um motorista!"
-            bg={require('./images/back.png')}
+            bg={require('./images/back2.png')}
           />
           <TouchableOpacity style={styles.button}>
-            <Ionicons name="md-search" size={24} color="#FFF" />
+            <Ionicons name="md-search" size={20} color="#FFF" paddingHorizontal={10} />
             <Text style={styles.buttonText}>Buscar Carona</Text>
           </TouchableOpacity>
         </View>

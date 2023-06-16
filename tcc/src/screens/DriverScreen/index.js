@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import { Snackbar, Text } from 'react-native-paper';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
@@ -10,6 +10,9 @@ const UserScreen = () => {
   const [cpf, setCPF] = useState('');
   const [number, setNumber] = useState('');
   const [rg, setRG] = useState('');
+  const [placa, setPlaca] = useState('');
+  const [carteiraMotorista, setCarteiraMotorista] = useState('');
+  const [documentoCarro, setDocumentoCarro] = useState('');
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const app = initializeApp(firebaseConfig);
@@ -17,19 +20,23 @@ const UserScreen = () => {
 
   const handleAddData = async () => {
     try {
-      
       await addDoc(collection(db, 'users'), {
         address,
         cpf,
         number,
         rg,
+        placa,
+        carteiraMotorista,
+        documentoCarro,
       });
 
-      
       setAddress('');
       setCPF('');
       setNumber('');
       setRG('');
+      setPlaca('');
+      setCarteiraMotorista('');
+      setDocumentoCarro('');
 
       setSnackbarVisible(true);
     } catch (error) {
@@ -38,9 +45,10 @@ const UserScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.form}>
-        <Text style={styles.title}>Atualize seu perfil!🤩</Text>
+        <Text style={styles.title}>Comece a ajudar!😁</Text>
+        <Text style={styles.subtitle}>Vire um motorista e ganhe dinheiro dirigindo!</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputTitle}>Endereço</Text>
           <TextInput
@@ -77,6 +85,33 @@ const UserScreen = () => {
             style={styles.input}
           />
         </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputTitle}>Placa</Text>
+          <TextInput
+            label="Placa"
+            value={placa}
+            onChangeText={setPlaca}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputTitle}>Carteira de Motorista</Text>
+          <TextInput
+            label="Carteira de Motorista"
+            value={carteiraMotorista}
+            onChangeText={setCarteiraMotorista}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputTitle}>Documento do Carro</Text>
+          <TextInput
+            label="Documento do Carro"
+            value={documentoCarro}
+            onChangeText={setDocumentoCarro}
+            style={styles.input}
+          />
+        </View>
         <Button title="Adicionar dados" onPress={handleAddData} style={styles.button} />
       </View>
       <Snackbar
@@ -87,13 +122,13 @@ const UserScreen = () => {
       >
         <Text style={styles.snackbarText}>Dados adicionados com sucesso!</Text>
       </Snackbar>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -109,6 +144,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    textAlign: 'center',
   },
   inputContainer: {
     marginBottom: 10,

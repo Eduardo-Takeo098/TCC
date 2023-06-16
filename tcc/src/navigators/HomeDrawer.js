@@ -7,6 +7,7 @@ import MapScreen from '../screens/MapScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import UserScreen from '../screens/UserScreen';
+import DriverScreen from '../screens/DriverScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -88,7 +89,7 @@ const App = () => {
           }}
         />
         <Drawer.Screen
-          name="Detalhes da Corrida"
+          name="Detalhes do Motorista"
           component={DetailsScreen}
           options={{
             drawerIcon: ({ focused }) => (
@@ -99,6 +100,23 @@ const App = () => {
                     { color: focused ? '#e91e63' : '#ccc' },
                   ]}>
                   🔍
+                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Motorista"
+          component={DriverScreen}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <View style={styles.iconContainer}>
+                <Text
+                  style={[
+                    styles.icon,
+                    { color: focused ? '#e91e63' : '#ccc' },
+                  ]}>
+                  🚗
                 </Text>
               </View>
             ),
