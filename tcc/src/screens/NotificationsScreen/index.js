@@ -1,15 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from './styled';
 
-const NotificationsScreen = () => {
-  const navigation = useNavigation();
-
-  const goBackToHome = () => {
-    navigation.navigate('HomeScreen');
-  };
-
+const NotificationsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Notificações</Text>
@@ -19,7 +13,7 @@ const NotificationsScreen = () => {
       <View style={styles.notificationContainer}>
         <Text style={styles.notificationText}>Nova notificação 2</Text>
       </View>
-      <TouchableOpacity onPress={goBackToHome} style={styles.backButton}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backButtonText}>Voltar para a página inicial</Text>
       </TouchableOpacity>
     </View>

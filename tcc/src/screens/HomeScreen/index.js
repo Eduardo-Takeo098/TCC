@@ -235,7 +235,7 @@ const HomeScreen = ({ navigation }) => {
             </MapView>
           )}
           <CourseList
-            img={require('./images/icon2.png')}
+            img={require('./images/icon1.png')}
             title="Ver detalhes da corrida"
             bg={require('./images/back2.png')}
           />

@@ -6,6 +6,14 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp,
+} from 'firebase/firestore';
+import firebaseConfig from '../Database/dbConfig';
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -86,7 +94,7 @@ export default function App() {
     }
   };
 
-  const traceRoute = () => {
+  const traceRoute = async () => {
     if (origin && destination) {
       setShowDirections(true);
       mapRef.current?.fitToCoordinates([origin, destination], {
@@ -94,6 +102,19 @@ export default function App() {
       });
       setIsRequestCreated(true);
       setIsSearchingDriver(true);
+
+      const firestore = getFirestore();
+      const calledCollectionRef = collection(firestore, 'Called');
+      const newCalledDoc = {
+        status: false,
+        created_at: serverTimestamp(),
+      };
+
+      try {
+        await addDoc(calledCollectionRef, newCalledDoc);
+      } catch (error) {
+        console.error('Erro ao buscar corrida: ', error);
+      }
 
       setTimeout(() => {
         setIsSearchingDriver(false);

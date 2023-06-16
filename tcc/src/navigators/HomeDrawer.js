@@ -16,9 +16,9 @@ const App = () => {
     <NavigationContainer>
       <Drawer.Navigator
         initialRouteName="Página Inicial"
-        drawerContentOptions={{
-          activeTintColor: '#e91e63',
-          itemStyle: { marginVertical: 5 },
+        screenOptions={{
+          drawerActiveTintColor: '#e91e63',
+          drawerItemStyle: { marginVertical: 5 },
         }}>
         <Drawer.Screen
           name="Página Inicial"
