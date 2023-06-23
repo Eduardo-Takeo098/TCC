@@ -20,6 +20,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Constants from "expo-constants";
 import MapViewDirections from "react-native-maps-directions";
+import { Animated } from "react-native";
 
 const GOOGLE_API_KEY = 'AIzaSyDnp6LRTU4hYJM0XjY57ywva2hfmiLweH4';
 
@@ -56,6 +57,8 @@ function InputAutocomplete({ label, placeholder, onPlaceSelected }) {
 }
 
 export default function App() {
+  const [animation] = useState(new Animated.Value(0));
+
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [showDirections, setShowDirections] = useState(false);
@@ -67,6 +70,14 @@ export default function App() {
   const [isSearchingDriver, setIsSearchingDriver] = useState(false);
   const [cancelButtonVisible, setCancelButtonVisible] = useState(true);
   const mapRef = useRef(null);
+
+  const startAnimation = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const moveTo = async (position) => {
     const camera = await mapRef.current?.getCamera();
@@ -120,6 +131,7 @@ export default function App() {
         setIsSearchingDriver(false);
         setIsDriverFound(true);
         setCancelButtonVisible(true);
+        startAnimation();
       }, 2000);
     }
   };
@@ -172,6 +184,27 @@ export default function App() {
         {origin && <Marker coordinate={origin} />}
         {destination && <Marker coordinate={destination} />}
         {showDirections && origin && destination && (
+        <>
+          <Marker coordinate={origin} />
+          <Marker coordinate={destination}>
+            <Animated.View
+              style={[
+                styles.animatedMarker,
+                {
+                  transform: [
+                    {
+                      translateX: animation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, width - 50], // Largura da tela - largura do ícone
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <Ionicons name="car" size={24} color="#fff" />
+            </Animated.View>
+          </Marker>
           <MapViewDirections
             origin={origin}
             destination={destination}
@@ -180,7 +213,8 @@ export default function App() {
             strokeWidth={4}
             onReady={traceRouteOnReady}
           />
-        )}
+        </>
+      )}
       </MapView>
       <View style={styles.searchContainer}>
         <InputAutocomplete
@@ -234,6 +268,11 @@ export default function App() {
 
 
 const styles = StyleSheet.create({
+  animatedMarker: {
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    borderRadius: 50,
+    padding: 10,
+  },
   container: {
     flex: 1,
     alignItems: "center",
