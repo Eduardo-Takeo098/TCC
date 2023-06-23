@@ -58,6 +58,7 @@ function InputAutocomplete({ label, placeholder, onPlaceSelected }) {
 
 export default function App() {
   const [animation] = useState(new Animated.Value(0));
+  const [animationEnabled, setAnimationEnabled] = useState(true);
 
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -72,11 +73,19 @@ export default function App() {
   const mapRef = useRef(null);
 
   const startAnimation = () => {
-    Animated.timing(animation, {
-      toValue: 1,
-      duration: 2000,
-      useNativeDriver: true,
-    }).start();
+    if (animationEnabled) {
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        Animated.spring(animation, {
+          toValue: 0,
+          friction: 8,
+          useNativeDriver: true,
+        }).start();
+      });
+    }
   };
 
   const moveTo = async (position) => {
@@ -106,6 +115,9 @@ export default function App() {
   };
 
   const traceRoute = async () => {
+    animation.setValue(0);
+
+    setAnimationEnabled(false);
     if (origin && destination) {
       setShowDirections(true);
       mapRef.current?.fitToCoordinates([origin, destination], {
@@ -131,6 +143,7 @@ export default function App() {
         setIsSearchingDriver(false);
         setIsDriverFound(true);
         setCancelButtonVisible(true);
+        animation.setValue(0);
         startAnimation();
       }, 2000);
     }
@@ -195,7 +208,7 @@ export default function App() {
                     {
                       translateX: animation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [0, width - 50], // Largura da tela - largura do ícone
+                        outputRange: [0, width - 50],
                       }),
                     },
                   ],

@@ -10,6 +10,7 @@ import {
   ImageBackground,
   StyleSheet,
   Dimensions,
+  Alert,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -50,9 +51,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 40,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#7a7878',
     textAlign: 'center',
-    marginTop: 150,
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
@@ -130,14 +130,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   courseListTitle: {
-  color: '#2e2c2c',
-  fontSize: 16,
-  paddingHorizontal: 20,
-  width: 200,
-  fontWeight: 'bold',
-  textAlign: 'center',
-  marginTop: 8,
-},
+    color: '#2e2c2c',
+    fontSize: 16,
+    paddingHorizontal: 20,
+    width: 200,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 8,
+  },
   button: {
     width: '100%',
     height: 56,
@@ -154,10 +154,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFF',
   },
+  additionalTextContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  additionalText: {
+    fontSize: 16,
+    color: '#2e2c2c',
+    textAlign: 'center',
+    marginTop: 10,
+  },
 });
 
 const HomeScreen = ({ navigation }) => {
   const [userLocation, setUserLocation] = useState(null);
+  const [showAdditionalText, setShowAdditionalText] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -176,7 +188,7 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const handleNavigateDetails = () => {
-    navigation.navigate('DetailsScreen');
+    setShowAdditionalText(true);
   };
 
   const CourseList = ({ img, title, bg }) => (
@@ -194,7 +206,9 @@ const HomeScreen = ({ navigation }) => {
           style={{ width: 60, height: 60, marginRight: 20 }}
         />
         <View>
-          <Text style={styles.courseListTitle} numberOfLines={2}>{title}</Text>
+          <Text style={styles.courseListTitle} numberOfLines={2}>
+            {title}
+          </Text>
         </View>
       </ImageBackground>
     </TouchableOpacity>
@@ -204,22 +218,26 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.contentContainer}>
-        <View style={styles.headerContainer}>
-          <ImageBackground
-            source={require('./images/image1.png')}
-            style={styles.headerBackground}
-          >
+          <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>Carona Solidária</Text>
-
-            <Pressable
-              style={styles.button1}
-              onPress={() => console.warn('Explore Btn clicked')}
+            <ImageBackground
+              source={require('./images/image1.png')}
+              style={styles.headerBackground}
             >
-              <Ionicons name="md-information-circle" size={24} color="#FF5F58" />
-              <Text style={styles.buttonText1}>Termos do aplicativo</Text>
-            </Pressable>
-          </ImageBackground>
-        </View>
+
+              <Pressable
+                style={styles.button1}
+                onPress={() => Alert.alert('Bem-vindo ao Carona Solidária.')}
+              >
+                <Ionicons
+                  name="md-information-circle"
+                  size={24}
+                  color="#FF5F58"
+                />
+                <Text style={styles.buttonText1}>Termos do aplicativo</Text>
+              </Pressable>
+            </ImageBackground>
+          </View>
           <Text style={styles.title}>Sua localização</Text>
           {userLocation && (
             <MapView
@@ -235,19 +253,38 @@ const HomeScreen = ({ navigation }) => {
             </MapView>
           )}
           <CourseList
-            img={require('./images/icon1.png')}
-            title="Ver detalhes da corrida"
-            bg={require('./images/back2.png')}
-          />
-          <CourseList
             img={require('./images/icon2.png')}
-            title="Se torne um motorista!"
+            title="Atualize seu perfil"
             bg={require('./images/back2.png')}
           />
-          <TouchableOpacity style={styles.button}>
-            <Ionicons name="md-search" size={20} color="#FFF" paddingHorizontal={10} />
-            <Text style={styles.buttonText}>Buscar Carona</Text>
-          </TouchableOpacity>
+
+          {showAdditionalText && (
+            <View style={styles.additionalTextContainer}>
+              <Text style={styles.additionalText}>
+                Para poder utilizar o aplicativo precisamos que você atualize seu perfil com documentos importantes
+              </Text>
+              <Text style={styles.additionalText}>
+                Para fazer isso vai até "Perfil"
+              </Text>
+            </View>
+          )}
+
+          <CourseList
+            img={require('./images/icon1.png')}
+            title="Atualize seu perfil"
+            bg={require('./images/back2.png')}
+          />
+
+          {showAdditionalText && (
+            <View style={styles.additionalTextContainer}>
+              <Text style={styles.additionalText}>
+                Para poder virar um motorista e ajudar outras pessoas precisamos que você atualize seu perfil com documentos importantes
+              </Text>
+              <Text style={styles.additionalText}>
+                Para fazer isso vai até "Motorista"
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

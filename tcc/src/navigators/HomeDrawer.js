@@ -8,6 +8,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import UserScreen from '../screens/UserScreen';
 import DriverScreen from '../screens/DriverScreen';
+import ChatScreen from '../screens/MapScreen/ChatScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -117,6 +118,23 @@ const App = () => {
                     { color: focused ? '#e91e63' : '#ccc' },
                   ]}>
                   🚗
+                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={{
+            drawerIcon: ({ focused }) => (
+              <View style={styles.iconContainer}>
+                <Text
+                  style={[
+                    styles.icon,
+                    { color: focused ? '#e91e63' : '#ccc' },
+                  ]}>
+                  💬
                 </Text>
               </View>
             ),

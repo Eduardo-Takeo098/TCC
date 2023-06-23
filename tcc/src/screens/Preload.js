@@ -1,34 +1,33 @@
 import React, { useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
+import LottieView from 'lottie-react-native';
 
 const Preload = (props) => {
-  useEffect(() => {
-    const delay = 2000;
-
-    const timer = setTimeout(() => {
-      if (!props.token) {
-        // LOGIN
-        props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })]
-        }));
-      } else {
-        // HOME
-        props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'HomeDrawer' })]
-        }));
-      }
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <LottieView
+        source={require('./Splash/splash.json')}
+        autoPlay
+        loop={false}
+        onAnimationFinish={() => {
+          if (!props.token) {
+            // LOGIN
+            props.navigation.dispatch(StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'OnboardingScreen' })]
+            }));
+          } else {
+            // HOME
+            props.navigation.dispatch(StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'HomeDrawer' })]
+            }));
+          }
+        }}
+      />
     </View>
   );
 }

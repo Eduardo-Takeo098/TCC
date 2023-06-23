@@ -10,6 +10,7 @@ import UserScreen from '../screens/UserScreen';
 import MapScreen from '../screens/MapScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import DetailsScreen from '../screens/DetailsScreen';
+import ChatScreen from '../screens/MapScreen/ChatScreen';
 
 const MainStack = createStackNavigator(
   {
@@ -57,6 +58,12 @@ const MainStack = createStackNavigator(
     },
     DetailsScreen: {
       screen: DetailsScreen,
+      navigationOptions: {
+        headerShown: false,
+      },
+    },
+    ChatScreen: {
+      screen: ChatScreen,
       navigationOptions: {
         headerShown: false,
       },

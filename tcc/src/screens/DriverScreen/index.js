@@ -9,11 +9,6 @@ import {
 } from 'firebase/firestore';
 import firebaseConfig from '../Database/dbConfig';
 
-const handleAcceptCalled = async (documentId) => {
-  const calledDocRef = doc(db, 'Called', documentId);
-  await updateDoc(calledDocRef, { status: true });
-};
-
 const DriversScreen = ({ navigation }) => {
   const [calledDocuments, setCalledDocuments] = useState([]);
   const [name, setName] = useState('');
@@ -34,6 +29,11 @@ const DriversScreen = ({ navigation }) => {
   useEffect(() => {
     fetchDriverData();
   }, []);
+
+  const handleAcceptCalled = async (documentId) => {
+    const calledDocRef = doc(db, 'Called', documentId);
+    await updateDoc(calledDocRef, { status: true });
+  };
 
   const fetchDriverData = async () => {
     const querySnapshot = await getDocs(collection(db, 'Drivers'));
@@ -190,7 +190,7 @@ const DriversScreen = ({ navigation }) => {
                   `Data e hora da criação: ${format(document.createdAt.toDate(), 'dd/MM/yyyy HH:mm')}`
                 )}
               </Text>
-              <Text style={racingText} > Mais Uma Corrida!</Text>
+              <Text style={styles.racingText} > Mais Uma Corrida!</Text>
               <Button
                 title="Aceitar?"
                 onPress={() => handleAcceptCalled(document.id)}
@@ -312,23 +312,20 @@ const styles = StyleSheet.create({
   addedDataContainer: {
     backgroundColor: '#FFF',
     padding: 20,
-    borderRadius: 20,
-    width: '100%',
-    elevation: 5,
+    borderRadius: 10,
+    elevation: 2,
   },
   addedDataTitle: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#000',
   },
   addedDataText: {
-    marginBottom: 10,
-    color: '#B2B2B2',
-    marginLeft: 1,
+    marginBottom: 5,
   },
   snackbar: {
     backgroundColor: '#333',
+    marginBottom: 20,
   },
   snackbarText: {
     color: '#FFF',
